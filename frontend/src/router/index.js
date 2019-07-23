@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 // import HelloWorld from '@/components/HelloWorld'
 import Home from '@/components/Home'
+import Post from '@/components/posts/Post'
 
 Vue.use(Router)
 
@@ -11,6 +12,10 @@ export default new Router({
       path: '/',
       name: 'Home',
       component: Home
+    },{
+      path: '/post',
+      name: 'Post',
+      component: Post,
     }
   ]
 })
