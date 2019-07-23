@@ -5,7 +5,7 @@ exports.index = (req, res, next) => {
         if(err) {
             return next(err);
         }
-        res.status(201).json(todos);
+        res.status(200).json(todos);
     });
 };
 
@@ -18,7 +18,12 @@ exports.create = (req, res, next) => {
         if(err) {
             return next(err);
         }
-        res.status(200).json(todo);
+        Todo.find({}, (err, todos) => {
+            if(err) {
+                return next(err);
+            }
+            res.status(200).json(todos);
+        });
     })
 }
 exports.edit = (req, res, next) => {
@@ -42,6 +47,11 @@ exports.delete = (req, res, next) => {
         if(err) {
             return next(err);
         }
-        res.status(204);
+        Todo.find({}, (err, todos) => {
+            if(err) {
+                return next(err);
+            }
+            res.status(200).json(todos);
+        });
     })
 }

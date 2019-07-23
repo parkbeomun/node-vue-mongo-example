@@ -7,7 +7,7 @@ module.exports = () => {
         }
         mongoose.connect(
             "mongodb://localhost:27017/nodestudy",
-            {  },
+            { useNewUrlParser: true },
             error => {
                 if(error) {
                     console.log('몽고디비 연결에 실패했습니다.',error);

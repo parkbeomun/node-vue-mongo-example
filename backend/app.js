@@ -1,27 +1,28 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const path = require('path')
+const bodyParser = require('body-parser')
 const history = require('connect-history-api-fallback');
 require('dotenv').config();
 
 const connect = require('./models');
 
 const indexRouter = require('./routes/index');
-const todoRouter = require('./routes/index');
-
+const todoRouter = require('./routes/todo')
 const app = express();
 
 connect(); //DB  실행
 
+app.set('view engine', 'pug');
 app.set('port', process.env.PORT || 3000);
-
+app.use(bodyParser.json())
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static('public'));
 
 app.use('/', indexRouter);
 app.use(history());
-app.use('/todos', todoRouter);
+app.use('/api/todos', todoRouter);
 
 //catch 404 and forward to error handler
 app.use((req, res, next) => {
