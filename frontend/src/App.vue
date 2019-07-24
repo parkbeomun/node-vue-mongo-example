@@ -1,17 +1,18 @@
 <template>
   <div id="app">
     <img src="./assets/logo.png">
-    <router-link to="/">Go to Home</router-link>
-    <router-link to="/post">Go to Post</router-link>
-    <router-link to="/todo">Go to Todo</router-link>
-    <router-link to="/sample">Go to API Sample</router-link>
+    <nav-component></nav-component>
     <router-view/>
   </div>
 </template>
 
 <script>
+  import NavComponent from './components/NaviComponent'
 export default {
-  name: 'App'
+  name: 'App',
+  components: {
+    'navComponent' : NavComponent
+  },
 }
 </script>
 

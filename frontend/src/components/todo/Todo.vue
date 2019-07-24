@@ -17,7 +17,7 @@
 <script>
     export default {
       created () {
-        this.$http.get('/api/todos')
+        this.$http.get(`${this.baseURI}`)
           .then((response) => {
             console.log('success ' + response)
             this.todoList = response.data;
@@ -30,12 +30,13 @@
       data: function () {
         return {
           text: '',
-          todoList: [ {todoName:'씻기'}, {todoName:'밥먹기'}],
+          todoList: [],
+          baseURI : "/api/todos"
           }
         },
         methods: {
           saveTodo: function () {
-            this.$http.post('/api/todos/create', {
+            this.$http.post(`${this.baseURI}/create`, {
               title: this.text
             })
               .then(response => {
@@ -47,7 +48,7 @@
               })
           },
           deleteTodo: function (id) {
-            this.$http.delete(`/api/todos/${id}`)
+            this.$http.delete(`${this.baseURI}/${id}`)
               .then((response)=>{
                 this.todoList = response.data;
               })

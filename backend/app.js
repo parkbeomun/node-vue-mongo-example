@@ -9,6 +9,7 @@ const connect = require('./models');
 
 const indexRouter = require('./routes/index');
 const todoRouter = require('./routes/todo')
+const postRouter = require('./routes/post')
 const app = express();
 
 connect(); //DB  실행
@@ -23,6 +24,7 @@ app.use(express.static('public'));
 app.use('/', indexRouter);
 app.use(history());
 app.use('/api/todos', todoRouter);
+app.use('/api/posts', postRouter);
 
 //catch 404 and forward to error handler
 app.use((req, res, next) => {
