@@ -9,8 +9,20 @@ exports.index = (req, res, next) => {
     });
 };
 
+exports.detail = (req, res, next) => {
+    Posts.findById(req.params.id,(err, post) => {
+        if(err) {
+            return next(err);
+        }
+     Posts.updateOne(req.params.id, { $set: {cknum: post.cknum + 1}});
+     res.status(200).json(post);
+    });
+};
+
 exports.create = (req, res, next) => {
     let posts = new Posts({
+        num: 0,
+        writer: 'owner',
         title: req.body.title,
         content: req.body.content,
     });
@@ -23,7 +35,7 @@ exports.create = (req, res, next) => {
     })
 }
 exports.edit = (req, res, next) => {
-    Posts.findById(req,params.id, (err, post) => {
+    Posts.findById(req.params.id, (err, post) => {
         if(err) {
             return next(err);
         }

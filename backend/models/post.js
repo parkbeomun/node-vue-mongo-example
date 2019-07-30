@@ -2,9 +2,15 @@ const mongoose = require('mongoose');
 
 let PostSchema = new mongoose.Schema({
     //To-do title
+    num: {
+      type: Number,
+    },
     title: {
         type: String,
         required: true
+    },
+    writer: {
+        type: String,
     },
     content: {
         type: String,
@@ -14,6 +20,10 @@ let PostSchema = new mongoose.Schema({
     createAt: {
         type: Date,
         default: Date.now()
+    },
+    cknum: {
+        type: Number,
+        default: 0
     }
 });
 

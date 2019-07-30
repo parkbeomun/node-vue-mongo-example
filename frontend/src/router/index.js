@@ -4,6 +4,7 @@ import Router from 'vue-router'
 import Home from '@/components/Home'
 import Post from '@/components/posts/Post'
 import WritePost from '@/components/posts/WritePost'
+import DetailPost from '@/components/posts/DetailPost'
 import Todo from '@/components/todo/Todo'
 import JsonPlaceHolder from '@/components/JsonPlaceHolder'
 
@@ -24,6 +25,11 @@ export default new Router({
       name: 'WritePost',
       component: WritePost,
     },{
+      path: '/post/detail/:id', /* 동적 라우팅 */
+      name: 'DetailPost',
+      component: DetailPost
+    }
+    , {
       path: '/todo',
       name: 'Todo',
       component: Todo
