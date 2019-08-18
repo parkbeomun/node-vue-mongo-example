@@ -4,6 +4,7 @@
       <router-link to="/post">Go to Post</router-link>
       <router-link to="/todo">Go to Todo</router-link>
       <router-link to="/sample">Go to API Sample</router-link>
+      <router-link to="/login">Login</router-link>
     </div>
 </template>
 

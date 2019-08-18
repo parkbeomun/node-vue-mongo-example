@@ -5,6 +5,7 @@
       내용: <input v-model="content" type="text" placeholder="내용을입력하세요"/>
       <br>
       <button v-on:click="save">저장</button>
+      <button v-on:click="deletePost">삭제</button>
       <button v-on:click="cancel">취소</button>
 
     </div>
@@ -49,6 +50,16 @@
             })
             .catch((error) => {
               alert("저장을 실패했습니다 :"+error);
+            })
+        },
+        deletePost: function () {
+          this.$http.delete(`${this.baseURI}/${this._id}`)
+            .then(response => {
+              alert("삭제되었습니다");
+              this.$router.go(-1)
+            })
+            .catch(error => {
+              alert("삭제실패 :"+error)
             })
         },
         cancel : function () {

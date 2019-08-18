@@ -7,6 +7,7 @@ import WritePost from '@/components/posts/WritePost'
 import DetailPost from '@/components/posts/DetailPost'
 import Todo from '@/components/todo/Todo'
 import JsonPlaceHolder from '@/components/JsonPlaceHolder'
+import Login from '@/components/auth/login'
 
 Vue.use(Router)
 
@@ -37,6 +38,10 @@ export default new Router({
       path: '/sample',
       name: 'jsonplaceholder',
       component: JsonPlaceHolder
+    },{
+      path: '/login',
+      name: 'login',
+      component: Login
     }
   ]
 })

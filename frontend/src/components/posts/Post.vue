@@ -2,16 +2,16 @@
     <div>
       <h1>게시글</h1>
       <div v-if="hasPosts">
-        <table class="table post-table">
-          <thead>
+        <table class="table">
+          <thead class="table-head">
             <th>번호</th>
             <th>제목</th>
             <th>작성자</th>
             <th>날짜</th>
             <th>조회수</th>
           </thead>
-          <tbody>
-            <tr v-for="post in posts">
+          <tbody class="table-body">
+            <tr v-for="post in paginatedData">
               <td>{{post.num}}</td>
               <td v-on:click="titleClick(post._id)">{{post.title}}</td>
               <td>{{post.writer}}</td>
@@ -24,7 +24,15 @@
           <router-link to="/post/write" class="btn btn-default btn-write"np>글작성</router-link>
         </div>
 
-
+        <div class="btn-cover">
+          <button :disabled="pageNum === 0" @click="prevPage" class="page-btn">
+            이전
+          </button>
+          <span class="page-count">{{ pageNum + 1 }} / {{ pageCount }} 페이지</span>
+          <button :disabled="pageNum >= pageCount - 1" @click="nextPage" class="page-btn">
+            다음
+          </button>
+        </div>
 
 <!--        <div v-for="post in posts">-->
 <!--          <p class="post title">{{ post.title }}</p>-->
@@ -54,12 +62,31 @@
           return {
             //posts: [],
             posts: [],
-            baseURI : "/api/posts"
+            baseURI : "/api/posts",
+            pageSize: 10,
+            pageNum: 0
           }
       },
       computed: {
         hasPosts: function () {
           return this.posts.length > 0
+        },
+        paginatedData: function () {
+          const start = this.pageNum * this.pageSize;
+          const end = start + this.pageSize;
+
+          console.log(' START '+start)
+          console.log(' END '+end)
+
+          return this.posts.slice(start,end);
+        },
+        pageCount () {
+          let listLeng = this.posts.length;
+          let listSize = this.pageSize;
+          let page = Math.floor(listLeng / listSize);
+
+          if(listLeng % listSize > 0) page += 1;
+
         }
       },
       methods: {
@@ -75,6 +102,12 @@
         },
         titleClick: function (id) {
           this.$router.push(`/post/detail/${id}`)
+        },
+        nextPage: function (){
+          this.pageNum += 1;
+        },
+        prevPage: function () {
+          this.pageNum -= 1;
         }
       },
     }
@@ -84,11 +117,18 @@
   .post {
     display:inline;
   }
-  .post-table {
+  .table {
     position: relative;
-    background-color: #7abaff;
     width: 1300px;
     height: 200px;
+    margin: auto;
+  }
+  .table-head {
+    background-color: #7abaff;
+    border: 2px solid #818182;
+
+  }
+  .table-body {
     border: 2px solid #818182;
     margin: auto;
   }
@@ -105,4 +145,17 @@
     margin-top: 30px;
     margin-left: 70px;
   }
+  .btn-cover {
+    margin-top: 1.5rem;
+    text-align: center;
+  }
+  .btn-cover .page-btn {
+    width: 5rem;
+    height: 2rem;
+    letter-spacing: 0.5px;
+  }
+  .btn-cover .page-count {
+    padding: 0 1rem;
+  }
+
 </style>
