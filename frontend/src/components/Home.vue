@@ -7,6 +7,10 @@
 
 <script>
     export default {
+        created() {
+          this.$http.get('/home')
+            .then(result => this.greeting = result.data.greeting)
+        },
         name: "Home"
     }
 </script>

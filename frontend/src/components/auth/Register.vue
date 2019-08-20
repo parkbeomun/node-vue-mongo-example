@@ -1,27 +1,26 @@
 <template>
   <div id="login">
     <div class="login-header">
-<!--      <a href="#" class="header-logo">logo</a>-->
-      <h1>로그인</h1>
+      <!--      <a href="#" class="header-logo">logo</a>-->
+      <h1>회원가입</h1>
     </div>
     <div class="login-form">
-      <form @submit.prevent="onSubmit(email,password)">
+      <form @submit.prevent="onSubmit(email,password,name)">
         <div class="form-group">
-          <label class="form-label">email : </label>
+          <label class="form-label">이메일 : </label>
           <input class="form-input" type="email" v-model="email" />
         </div>
         <div class="form-group">
-          <label class="form-label">password : </label>
+          <label class="form-label">비밀번호 : 5자이상 10자이하</label>
           <input class="form-input" type="password" v-model="password" />
         </div>
+        <div class="form-group">
+          <label class="form-label">이름 : </label>
+          <input class="form-input" type="text" v-model="name" />
+        </div>
         <br>
-        <button type="submit" value="Login">로그인</button>
+        <button type="submit" value="Login">회원가입</button>
       </form>
-      <p>{{msg}}</p>
-      <div class="a-group">
-        <router-link class="a-group-link" to="/register">회원가입</router-link>
-        <router-link class="a-group-link" to="/register">찾기</router-link>
-      </div>
     </div>
     <div class="login-footer">
       <div class="footer-sign-in">
@@ -31,15 +30,19 @@
   </div>
 
 </template>
+
 <script>
   // import { mapActions, mapState } from 'vuex'
   /* login */
   export default {
     data () {
       return {
+        baseURI : "/api/auth",
         valid: true,
         email: '',
         password: '',
+        passwordChk: '',
+        name: '',
         msg: ''
       }
     },
@@ -60,30 +63,37 @@
         }
       },
       */
-      onSubmit (email, password) {
+      onSubmit (email, password, name) {
 
-        //LOGIN 액션 실행
-        this.$store.dispatch('LOGIN', {email, password})
-          .then(() => this.redirect)
-          .catch(({message}) => this.msg = message)
+        if(password.length < 5 || password.length > 10){
+          alert("비밀번호를 확인하세요");
+          return;
+        }
+        if(name.trim() < 1){
+          alert("이름을 입력하세요");
+          return;
+        }
+
+        //REGISTER 액션 실행
+        this.$http.post(`${this.baseURI}/register`, {email, password, name})
+          .then((respond) => {
+            alert("회원가입 완료")
+            this.$router.push(`/login`)
+          })
+          .catch((err) => {alert(err)})
       },
 
-      redirect() {
-        //리다이렉트 처리
-        this.$router.go(-1)
-      }
     },
-    /*
-    computed: mapState({
-      errorMessage: state => state.login.errorMessage,
-      isAuth: state => state.login.isAuth
-    })
-    */
+
+    computed: {
+
+    }
+
 
   }
 </script>
-<style scoped>
 
+<style scoped>
   .login-header > h1 {
     font-size: 24px;
     font-weight: 300; /* 폰트 굵기 */
@@ -95,19 +105,19 @@
   .login-form {
     display: inline-block;
     width: 378px;
-    height: 380px;
+    height: 400px;
     padding: 24px;
     border: 1px solid #ababab;
     background-color: white;
   }
   .form-group {
-    padding-top: 15px;
-    margin-bottom: 15px;
+    padding-top: 13px;
+    margin-bottom: 10px;
     width: 73px;
     hegith: 20px;
   }
   .form-label {
-    width:100px;
+    width: 250px;
     font: bold 15px Dotum;
     text-align:left
   }

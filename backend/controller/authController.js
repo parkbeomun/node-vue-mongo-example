@@ -81,7 +81,7 @@ exports.login = (req, res, next) => {
     const check = (user) => {
 
         if(!user) {
-            throw Exception('login failed')
+            throw Exception('이메일을 확인하세요')
         } else {
             if(user.verify(password)) {
                 const p = new Promise((resolve, reject) => {
@@ -106,7 +106,7 @@ exports.login = (req, res, next) => {
                 return p
 
             } else {
-                throw new Error('login failed')
+                throw new Error('패스워드가 틀립니다')
             }
 
 
@@ -118,6 +118,7 @@ exports.login = (req, res, next) => {
     const respond = (token) => {
         res.json({
             message: 'logged in successfully',
+
             token
         })
     }

@@ -7,9 +7,16 @@ import WritePost from '@/components/posts/WritePost'
 import DetailPost from '@/components/posts/DetailPost'
 import Todo from '@/components/todo/Todo'
 import JsonPlaceHolder from '@/components/JsonPlaceHolder'
-import Login from '@/components/auth/login'
-
+import Login from '@/components/auth/Login'
+import Register from '@/components/auth/Register'
+import Me from '@/components/Me'
 Vue.use(Router)
+
+const requireAuth = () => (from, to, next) => {
+  const isAuthenticated = false
+  if(isAuthenticated) return next()
+  next('/login')
+}
 
 export default new Router({
   routes: [
@@ -42,6 +49,15 @@ export default new Router({
       path: '/login',
       name: 'login',
       component: Login
+    },{
+      path: '/register',
+      name: 'Register',
+      component: Register
+    },{
+      path: '/me',
+      name: 'Me',
+      component: Me,
+      beforeEnter: requireAuth() //beforeEnter 인터셉터
     }
   ]
 })
