@@ -64,14 +64,12 @@
 
         //LOGIN 액션 실행
         this.$store.dispatch('LOGIN', {email, password})
-          .then(() => this.redirect)
+          .then(() => {
+            this.$router.push({path:'/'})
+          })
           .catch(({message}) => this.msg = message)
       },
 
-      redirect() {
-        //리다이렉트 처리
-        this.$router.go(-1)
-      }
     },
     /*
     computed: mapState({

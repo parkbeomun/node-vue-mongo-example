@@ -136,3 +136,7 @@ exports.login = (req, res, next) => {
         .catch(onError)
 
 };
+
+exports.me = (req, res, next) => {
+
+}

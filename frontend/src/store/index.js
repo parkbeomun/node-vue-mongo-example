@@ -22,7 +22,9 @@ export default new Vuex.Store({
 
    */
   state: {
-    accessToken: null
+    accessToken: localStorage.getItem('access-token') || '',
+    status: '',
+    username: '박범운'
   },
   /*
     getter
@@ -33,7 +35,9 @@ export default new Vuex.Store({
     https://vuex.vuejs.org/kr/guide/getters.html
    */
   getters: {
-
+    isAuthenticated: state  => !!state.accessToken,
+    authStatus: state => state.status,
+    getUserName: state => state.username
   },
   /*
     mutations(변이)
@@ -49,11 +53,13 @@ export default new Vuex.Store({
     https://vuex.vuejs.org/kr/guide/mutations.html
      */
   mutations: {
-    LOGIN (state, {data}) {
-      state.accessToken = data.token
+    LOGIN (state, {token}) {
+      state.accessToken = token
     },
     LOGOUT (state) {
       state.accessToken = null
+      state.status = ''
+      localStorage.removeItem('access-token')
     }
   },
 
@@ -65,11 +71,19 @@ export default new Vuex.Store({
     store.dispatch('LOGIN') 와 같이 사용
     mutations 는 state 변경에 대해 동기적이어야 하지만 action은 비동기작업을 수행가능하다.
     https://vuex.vuejs.org/kr/guide/actions.html
+    - vuex actions returning promises.
    */
   actions: {
     LOGIN ({commit}, {email, password}) {
       return axios.post(`${resourceHost}/api/auth/login`,{email, password})
-        .then(({data}) => commit('LOGIN', data))
+        .then(({data}) => {
+          commit('LOGIN', data.token)
+
+          //모든 HTTP 요청 헤더에 Authorization 을 추가한다. ( axios 기본 설정값 설정 참조 )
+          axios.defaults.headers.common['Authorization'] = `Bearer ${data.token}`
+
+          localStorage.setItem('access-token', data.token)
+        })
     },
     LOGOUT ({commit}) {
       commit('LOGOUT')

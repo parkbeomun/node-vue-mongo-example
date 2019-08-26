@@ -1,17 +1,20 @@
 const User = require('../models/user')
+const Menu = require('../models/menu')
 const jwt = require('jsonwebtoken')
 
 /*
 
-    POST /home
+    GET /home
     {
-        email,
-        password,
-        name
+
     }
 
  */
-exports.register = (req, res, next) => {
-
-
+exports.home = (req, res, next) => {
+    Menu.find({}, (err,menus) => {
+        if(err) {
+            return next(err);
+        }
+        res.status(200).json(menus);
+    })
 };

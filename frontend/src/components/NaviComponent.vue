@@ -8,16 +8,45 @@
         <router-link class="nav" to="/sample">API 호출 테스트</router-link>
       </div>
       <div class="nav-group-right">
-        <router-link class="nav" to="/register">회원가</router-link>
-        <router-link class="nav" to="/login">로그인</router-link>
-        <router-link class="nav" to="/me">마이페이지</router-link>
+        <div v-if="auth">
+          <div class="nav">안녕하세요 {{username}} 님</div>
+          <router-link class="nav" to="/me">마이페이지</router-link>
+          <router-link class="nav" to="/logout">로그아웃</router-link>
+        </div>
+        <div v-else>
+          <router-link  class="nav" to="/register">회원가입</router-link>
+          <router-link class="nav" to="/login">로그인</router-link>
+        </div>
       </div>
     </div>
 </template>
 
 <script>
-    export default {
-        name: "NaviComponent"
+  import { mapGetters } from 'vuex'
+
+  export default {
+        name: "NaviComponent",
+        data: function(){
+          return {
+
+          }
+        },
+
+        methods: {
+          logout: () => {
+            this.$store.dispatch('LOGOUT')
+            //this.$store.dispatch('LOGIN', {email, password})
+            this.$router.push({path:'/login'})
+          }
+
+        },
+
+       computed: {
+          ...mapGetters({
+            auth: 'isAuthenticated',
+            username: 'getUserName'
+          })
+       }
     }
 </script>
 
@@ -40,9 +69,14 @@
   }
   .nav-group-right {
     padding-top: 10px;
-    float: right
+    float: right;
+    width: 500px;
+  }
+  .nav-group-right > p {
+    width: 50px;
   }
   .nav {
+
     display:inline;
     border-left: 1px solid #4e555b;
     font: bold 12px Dotum;

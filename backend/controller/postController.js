@@ -29,6 +29,7 @@ exports.create = (req, res, next) => {
 
     posts.save((err) => {
         if(err) {
+
             return next(err);
         }
         res.status(200).json({"msg":"succes"})

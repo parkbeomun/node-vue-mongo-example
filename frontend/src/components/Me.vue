@@ -16,7 +16,7 @@
 
     export default {
       created () {
-        this.$http.get(`${this.baseURI}me`)
+        this.$http.get(`${this.baseURI}/me`)
           .then((data) => {
             this.user = data.user
             this.accessLog = data.accessLog
