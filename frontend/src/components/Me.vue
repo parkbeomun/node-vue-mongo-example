@@ -3,6 +3,7 @@
       <h1>ME</h1>
       <div>
         <label>User info:</label>
+        <pre>{{email}}</pre>
         <pre>{{user}}</pre>
       </div>
       <div>
@@ -18,7 +19,11 @@
       created () {
         this.$http.get(`${this.baseURI}/me`)
           .then((data) => {
-            this.user = data.user
+            console.log(data)
+            let userinfo = data.info
+
+            this.user = userinfo.name
+            this.email = userinfo.email
             this.accessLog = data.accessLog
           })
           .catch((error) => {
@@ -30,6 +35,7 @@
         return {
           baseURI : "/api/auth",
           user: '',
+          email: '',
           accessLog: []
         }
       }

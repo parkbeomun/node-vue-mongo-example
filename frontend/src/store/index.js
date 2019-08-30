@@ -54,7 +54,6 @@ export default new Vuex.Store({
      */
   mutations: {
     LOGIN (state, {data}) {
-      alert(data.token)
       state.accessToken = data.token
       //모든 HTTP 요청 헤더에 Authorization 을 추가한다. ( axios 기본 설정값 설정 참조 )
       axios.defaults.headers.common['Authorization'] = `Bearer ${data.token}`
@@ -81,7 +80,6 @@ export default new Vuex.Store({
     async LOGIN ({commit}, {email, password}) {
       return await axios.post(`${resourceHost}/api/auth/login`,{email, password})
         .then(({data}) => {
-          alert(data.token)
           commit('LOGIN', {data}) //json 형태로 보내야됨 아니면 undefind 로 보내짐
         })
     },
