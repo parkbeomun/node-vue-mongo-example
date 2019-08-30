@@ -65,6 +65,7 @@
         //LOGIN 액션 실행
         this.$store.dispatch('LOGIN', {email, password})
           .then(() => {
+
             this.$router.push({path:'/'})
           })
           .catch(({message}) => this.msg = message)

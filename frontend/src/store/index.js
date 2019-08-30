@@ -53,8 +53,12 @@ export default new Vuex.Store({
     https://vuex.vuejs.org/kr/guide/mutations.html
      */
   mutations: {
-    LOGIN (state, {token}) {
-      state.accessToken = token
+    LOGIN (state, {data}) {
+      alert(data.token)
+      state.accessToken = data.token
+      //모든 HTTP 요청 헤더에 Authorization 을 추가한다. ( axios 기본 설정값 설정 참조 )
+      axios.defaults.headers.common['Authorization'] = `Bearer ${data.token}`
+      localStorage.setItem('access-token', data.token)
     },
     LOGOUT (state) {
       state.accessToken = null
@@ -74,15 +78,11 @@ export default new Vuex.Store({
     - vuex actions returning promises.
    */
   actions: {
-    LOGIN ({commit}, {email, password}) {
-      return axios.post(`${resourceHost}/api/auth/login`,{email, password})
+    async LOGIN ({commit}, {email, password}) {
+      return await axios.post(`${resourceHost}/api/auth/login`,{email, password})
         .then(({data}) => {
-          commit('LOGIN', data.token)
-
-          //모든 HTTP 요청 헤더에 Authorization 을 추가한다. ( axios 기본 설정값 설정 참조 )
-          axios.defaults.headers.common['Authorization'] = `Bearer ${data.token}`
-
-          localStorage.setItem('access-token', data.token)
+          alert(data.token)
+          commit('LOGIN', {data}) //json 형태로 보내야됨 아니면 undefind 로 보내짐
         })
     },
     LOGOUT ({commit}) {

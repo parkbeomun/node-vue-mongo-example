@@ -137,6 +137,17 @@ exports.login = (req, res, next) => {
 
 };
 
-exports.me = (req, res, next) => {
+/* https://medium.com/dev-bits/a-guide-for-adding-jwt-token-based-authentication-to-your-single-page-nodejs-applications-c403f7cf04f4 */
+exports.check = (req, res) => {
+    res.json({
+        success: true,
+        info: req.decoded
+    })
+}
 
+exports.me = (req, res) => {
+    res.json({
+        success: true,
+        info: req.decoded
+    })
 }
