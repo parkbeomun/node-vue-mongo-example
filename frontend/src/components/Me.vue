@@ -4,7 +4,7 @@
       <div>
         <label>User info:</label>
         <pre>{{email}}</pre>
-        <pre>{{user}}</pre>
+        <pre>{{name}}</pre>
       </div>
       <div>
         <label>Access Log:</label>
@@ -18,13 +18,13 @@
     export default {
       created () {
         this.$http.get(`${this.baseURI}/me`)
-          .then((data) => {
-            console.log(data)
-            let userinfo = data.info
-
-            this.user = userinfo.name
-            this.email = userinfo.email
-            this.accessLog = data.accessLog
+          .then((obj) => {
+            console.log(obj.data.info)
+             let userinfo = obj.data.info
+            //
+             this.name = userinfo.name
+             this.email = userinfo.email
+            // this.accessLog = data.accessLog
           })
           .catch((error) => {
             console.log(error)
@@ -34,7 +34,7 @@
       data () {
         return {
           baseURI : "/api/auth",
-          user: '',
+          name: '',
           email: '',
           accessLog: []
         }

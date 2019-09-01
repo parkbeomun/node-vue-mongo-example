@@ -99,7 +99,11 @@ exports.login = (req, res, next) => {
                             subject: 'userinfo'
                         }, (err, token) => {
                             if(err) reject(err)
-                            resolve(token)
+                            //console.log(user.name)
+                            resolve({
+                                token,
+                                name: username
+                            })
                         })
                 })
 
@@ -115,11 +119,12 @@ exports.login = (req, res, next) => {
         }
     } //end check
 
-    const respond = (token) => {
+    const respond = (data, name) => {
+        console.log(name)
         res.json({
             message: 'logged in successfully',
-
-            token
+            token: data.token,
+            name: data.name
         })
     }
 

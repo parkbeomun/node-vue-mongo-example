@@ -24,7 +24,7 @@ export default new Vuex.Store({
   state: {
     accessToken: localStorage.getItem('access-token') || '',
     status: '',
-    username: '박범운'
+    username: ''
   },
   /*
     getter
@@ -55,6 +55,7 @@ export default new Vuex.Store({
   mutations: {
     LOGIN (state, {data}) {
       state.accessToken = data.token
+      state.username = data.name
       //모든 HTTP 요청 헤더에 Authorization 을 추가한다. ( axios 기본 설정값 설정 참조 )
       axios.defaults.headers.common['Authorization'] = `Bearer ${data.token}`
       localStorage.setItem('access-token', data.token)

@@ -17,15 +17,20 @@
         <br>
         <button type="submit" value="Login">로그인</button>
       </form>
-      <p>{{msg}}</p>
       <div class="a-group">
         <router-link class="a-group-link" to="/register">회원가입</router-link>
         <router-link class="a-group-link" to="/register">찾기</router-link>
       </div>
     </div>
+    <div><p style="color: red;" >{{msg}}</p></div>
     <div class="login-footer">
       <div class="footer-sign-in">
-        New to Vana Blog? <a href="#">Create an account.</a>
+        <button class='btn-social-login' style='background:#D93025'><i class="xi-2x xi-google"></i></button>
+        <button class='btn-social-login' style='background:#4267B2'><i class="xi-2x xi-facebook"></i></button>
+<!--        <button class='btn-social-login' style='background:#55ACEE'><i class="xi-2x xi-twitter"></i></button>-->
+<!--        <button class='btn-social-login' style='background:#24292E'><i class="xi-2x xi-github"></i></button>-->
+<!--        <button class='btn-social-login' style='background:#1FC700'><i class="xi-2x xi-naver"></i></button>-->
+        <button class='btn-social-login' style='background:#FFEB00'><i class="xi-2x xi-kakaotalk text-dark"></i></button>
       </div>
     </div>
   </div>
@@ -68,7 +73,7 @@
 
             this.$router.push({path:'/'})
           })
-          .catch(({message}) => this.msg = message)
+          .catch(({message}) => this.msg = "아이디 또는 비밀번호를 확인하세요")
       },
 
     },
@@ -129,4 +134,18 @@
     padding: 20px;
     border: 0.5px solid #ababab;
   }
+
+  /*소셜로그인버튼*/
+  .btn-social-login {
+    transition: all .2s;
+    outline: 0;
+    border: 1px solid transparent;
+    padding: .5rem !important;
+    border-radius: 50%;
+    color: #fff;
+  }
+  .btn-social-login:focus {
+    box-shadow: 0 0 0 .2rem rgba(0,123,255,.25);
+  }
+  .text-dark { color: #343a40!important; }
 </style>
