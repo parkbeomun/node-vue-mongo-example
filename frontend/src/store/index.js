@@ -87,5 +87,11 @@ export default new Vuex.Store({
     LOGOUT ({commit}) {
       commit('LOGOUT')
     },
+    async KAKAO_LOGIN({commit},{}) {
+      return await axios.post(`${resourceHost}/api/auth/login`,{email, password})
+        .then(({data}) => {
+          commit('LOGIN', {data}) //json 형태로 보내야됨 아니면 undefind 로 보내짐
+        })
+    }
   }
 })

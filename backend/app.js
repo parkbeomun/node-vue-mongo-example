@@ -14,6 +14,7 @@ const homeRouter = require('./routes/home');
 const todoRouter = require('./routes/todo')
 const postRouter = require('./routes/post')
 const authRouter = require('./routes/auth')
+const oauthRouter = require('./routes/oauth')
 
 const app = express();
 
@@ -33,6 +34,7 @@ app.use(history());
 app.use('/api/todos', todoRouter);
 app.use('/api/posts', postRouter);
 app.use('/api/auth', authRouter);
+app.use('/api/auth/kakao',authRouter)
 
 
 //catch 404 and forward to error handler

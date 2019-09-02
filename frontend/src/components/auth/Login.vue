@@ -25,7 +25,7 @@
     <div><p style="color: red;" >{{msg}}</p></div>
     <div class="login-footer">
       <div class="footer-sign-in">
-        <button class='btn-social-login' style='background:#D93025'><i class="xi-2x xi-google"></i></button>
+        <button class='btn-social-login' style='background:#D93025' @click="onSocialLogin"><i class="xi-2x xi-google"></i></button>
         <button class='btn-social-login' style='background:#4267B2'><i class="xi-2x xi-facebook"></i></button>
 <!--        <button class='btn-social-login' style='background:#55ACEE'><i class="xi-2x xi-twitter"></i></button>-->
 <!--        <button class='btn-social-login' style='background:#24292E'><i class="xi-2x xi-github"></i></button>-->
@@ -65,10 +65,10 @@
         }
       },
       */
-      onSubmit (email, password) {
+      onSocialLogin () {
 
         //LOGIN 액션 실행
-        this.$store.dispatch('LOGIN', {email, password})
+        this.$store.dispatch('KAKAO_LOGIN', {})
           .then(() => {
 
             this.$router.push({path:'/'})
