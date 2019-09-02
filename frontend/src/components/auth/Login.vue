@@ -25,12 +25,15 @@
     <div><p style="color: red;" >{{msg}}</p></div>
     <div class="login-footer">
       <div class="footer-sign-in">
-        <button class='btn-social-login' style='background:#D93025' @click="onSocialLogin"><i class="xi-2x xi-google"></i></button>
+        <button class='btn-social-login' style='background:#D93025'><i class="xi-2x xi-google"></i></button>
         <button class='btn-social-login' style='background:#4267B2'><i class="xi-2x xi-facebook"></i></button>
 <!--        <button class='btn-social-login' style='background:#55ACEE'><i class="xi-2x xi-twitter"></i></button>-->
 <!--        <button class='btn-social-login' style='background:#24292E'><i class="xi-2x xi-github"></i></button>-->
 <!--        <button class='btn-social-login' style='background:#1FC700'><i class="xi-2x xi-naver"></i></button>-->
-        <button class='btn-social-login' style='background:#FFEB00'><i class="xi-2x xi-kakaotalk text-dark"></i></button>
+<!--        <button class='btn-social-login' style='background:#FFEB00' @click="onSocialLogin"><i class="xi-2x xi-kakaotalk text-dark"></i></button>-->
+<!--        <a href="http://localhost:3000/api/auth/kakao">-->
+<!--          <button class='btn-social-login' style='background:#FFEB00'><i class="xi-2x xi-kakaotalk text-dark"></i></button>-->
+<!--        </a>-->
       </div>
     </div>
   </div>
@@ -65,17 +68,26 @@
         }
       },
       */
-      onSocialLogin () {
+      onSubmit (email, password) {
 
         //LOGIN 액션 실행
-        this.$store.dispatch('KAKAO_LOGIN', {})
+        this.$store.dispatch('LOGIN', {email, password})
           .then(() => {
 
             this.$router.push({path:'/'})
           })
           .catch(({message}) => this.msg = "아이디 또는 비밀번호를 확인하세요")
       },
+      onSocialLogin () {
 
+        //LOGIN 액션 실행
+        this.$store.dispatch('KAKAO_LOGIN')
+          .then(() => {
+
+            this.$router.push({path:'/'})
+          })
+          .catch(({message}) => this.msg = "아이디 또는 비밀번호를 확인하세요")
+      },
     },
     /*
     computed: mapState({

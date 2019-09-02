@@ -64,6 +64,9 @@ export default new Vuex.Store({
       state.accessToken = null
       state.status = ''
       localStorage.removeItem('access-token')
+    },
+    KAKAO_LOGIN (state) {
+      console.log(state)
     }
   },
 
@@ -87,10 +90,23 @@ export default new Vuex.Store({
     LOGOUT ({commit}) {
       commit('LOGOUT')
     },
-    async KAKAO_LOGIN({commit},{}) {
-      return await axios.post(`${resourceHost}/api/auth/login`,{email, password})
+    async KAKAO_LOGIN({commit}) {
+      // const params = {
+      //   method: "GET",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //     "Access-Control-Allow-Origin": "http://localhost:3000",
+      //     "Access-Control-Allow-Methods": "GET, POST, OPTIONS, PUT, PATCH, DELETE",
+      //     "Access-Control-Allow-Headers": "X-Requested-With,content-type",
+      //     "Access-Control-Allow-Credentials": true,
+      //   },
+      //   withCredentials: true,
+      //   data: undefined
+      // }
+      // return await axios.get(`${resourceHost}/api/auth/kakao`,params)
+      return await axios.get(`${resourceHost}/api/auth/kakao`)
         .then(({data}) => {
-          commit('LOGIN', {data}) //json 형태로 보내야됨 아니면 undefind 로 보내짐
+          commit('KAKAO_LOGIN', {data}) //json 형태로 보내야됨 아니면 undefind 로 보내짐
         })
     }
   }

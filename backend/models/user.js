@@ -15,6 +15,18 @@ const User = new Schema({
         type: String,
         require: true
     },
+    nick: {
+        type: String,
+        require: true
+    },
+    snsId: {
+        type: String,
+        require: true
+    },
+    provider: {
+        type: String,
+        require: true
+    },
     admin: {
         type: Boolean,
         default: false

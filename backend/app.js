@@ -5,20 +5,25 @@ const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
 const session = require('express-session')
 const history = require('connect-history-api-fallback');
+const passport = require('passport')
 require('dotenv').config();
 
 const connect = require('./models');
+const passportConfig = require('./passport/index')
 
 const indexRouter = require('./routes/index');
 const homeRouter = require('./routes/home');
 const todoRouter = require('./routes/todo')
 const postRouter = require('./routes/post')
 const authRouter = require('./routes/auth')
-const oauthRouter = require('./routes/oauth')
+
+
 
 const app = express();
 
 connect(); //DB  실행
+
+
 
 app.set('view engine', 'pug');
 app.set('port', process.env.PORT || 3000);
@@ -28,13 +33,17 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.static('public'));
 
 
+passportConfig(passport)
+app.use(passport.initialize())
+
+
 app.use('/', indexRouter);
 app.use('/home', homeRouter);
 app.use(history());
 app.use('/api/todos', todoRouter);
 app.use('/api/posts', postRouter);
 app.use('/api/auth', authRouter);
-app.use('/api/auth/kakao',authRouter)
+
 
 
 //catch 404 and forward to error handler
@@ -50,6 +59,7 @@ app.use((err, req, res, next) => {
 
     // render the error page
     res.status(err.status || 500);
+    console.log(err)
     res.render("error");
 });
 
