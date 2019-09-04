@@ -30,10 +30,12 @@
 <!--        <button class='btn-social-login' style='background:#55ACEE'><i class="xi-2x xi-twitter"></i></button>-->
 <!--        <button class='btn-social-login' style='background:#24292E'><i class="xi-2x xi-github"></i></button>-->
 <!--        <button class='btn-social-login' style='background:#1FC700'><i class="xi-2x xi-naver"></i></button>-->
-<!--        <button class='btn-social-login' style='background:#FFEB00' @click="onSocialLogin"><i class="xi-2x xi-kakaotalk text-dark"></i></button>-->
+        <button class='btn-social-login' style='background:#FFEB00' @click="onKakaoLogin"><i class="xi-2x xi-kakaotalk text-dark"></i></button>
 <!--        <a href="http://localhost:3000/api/auth/kakao">-->
 <!--          <button class='btn-social-login' style='background:#FFEB00'><i class="xi-2x xi-kakaotalk text-dark"></i></button>-->
 <!--        </a>-->
+<!--        <a id="kakao-login-btn"><button class='btn-social-login' style='background:#FFEB00'><i class="xi-2x xi-kakaotalk text-dark"></i></button></a>-->
+        <a id="kakao-login-btn"></a>
       </div>
     </div>
   </div>
@@ -43,12 +45,21 @@
   // import { mapActions, mapState } from 'vuex'
   /* login */
   export default {
+    mounted() {
+        Kakao.init('fccf32c070c010a9d5fb15cfc1ab9370')
+    },
     data () {
       return {
         valid: true,
         email: '',
         password: '',
-        msg: ''
+        msg: '',
+        login_data : [{
+          access_token : 'zz',
+          refrash_token: 'zzz',
+          nikname: 'zzzz',
+        }],
+        test: 'test'
       }
     },
     methods: {
@@ -78,15 +89,57 @@
           })
           .catch(({message}) => this.msg = "아이디 또는 비밀번호를 확인하세요")
       },
-      onSocialLogin () {
+      onKakaoLogin () {
+        this.kakaoLogin()
+          .then( result => {
+            //console.log('result : '+JSON.stringify(result.authObj))
+            //console.log('result2 : '+JSON.stringify(result.res))
 
-        //LOGIN 액션 실행
-        this.$store.dispatch('KAKAO_LOGIN')
-          .then(() => {
+            const access_token = result.authObj.access_token
+            const refrash_token = result.authObj.refrash_token
+            const nikname = result.res.properties.nickname;
 
+
+            var data = {
+              token : access_token,
+              refrash_token : refrash_token,
+              name : nikname
+            }
+
+            this.$store.commit('KAKAO_LOGIN', {data})
             this.$router.push({path:'/'})
+
+
           })
-          .catch(({message}) => this.msg = "아이디 또는 비밀번호를 확인하세요")
+
+      },
+      kakaoLogin () {
+        /* kakao javascript jdk  */
+
+        return new Promise((resolve, reject) => {
+            Kakao.Auth.login({
+              success: function (authObj) {
+                //console.log(JSON.stringify(authObj));
+                Kakao.API.request({
+                  url: '/v2/user/me',
+                  success: function (res) {
+                    resolve({authObj,res})
+                  },
+                  fail: function (error) {
+                    //console.log(JSON.stringify(error));
+                    reject(error)
+                  }
+                }).then((res) => {
+
+                })
+              },
+              fail: function (err) {
+                //alert(JSON.stringify(err));
+                reject(err)
+              }
+            }) //end Kakao.Auth.login
+          }
+        ) //end promise
       },
     },
     /*

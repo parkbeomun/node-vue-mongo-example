@@ -23,6 +23,7 @@ export default new Vuex.Store({
    */
   state: {
     accessToken: localStorage.getItem('access-token') || '',
+    refresh_token: localStorage.getItem('refresh-token') || '',
     status: '',
     username: ''
   },
@@ -62,12 +63,19 @@ export default new Vuex.Store({
     },
     LOGOUT (state) {
       state.accessToken = null
+      state.refresh_token = null
       state.status = ''
       localStorage.removeItem('access-token')
+      localStorage.removeItem('refresh-token')
     },
-    KAKAO_LOGIN (state) {
-      console.log(state)
-    }
+    KAKAO_LOGIN (state, {data}) {
+      //alert(data)
+      state.accessToken = data.token
+      state.username = data.name
+      //모든 HTTP 요청 헤더에 Authorization 을 추가한다. ( axios 기본 설정값 설정 참조 )
+      axios.defaults.headers.common['Authorization'] = `Bearer ${data.token}`
+      localStorage.setItem('access-token', data.token)
+    },
   },
 
   /*
@@ -90,24 +98,11 @@ export default new Vuex.Store({
     LOGOUT ({commit}) {
       commit('LOGOUT')
     },
-    async KAKAO_LOGIN({commit}) {
-      // const params = {
-      //   method: "GET",
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //     "Access-Control-Allow-Origin": "http://localhost:3000",
-      //     "Access-Control-Allow-Methods": "GET, POST, OPTIONS, PUT, PATCH, DELETE",
-      //     "Access-Control-Allow-Headers": "X-Requested-With,content-type",
-      //     "Access-Control-Allow-Credentials": true,
-      //   },
-      //   withCredentials: true,
-      //   data: undefined
-      // }
-      // return await axios.get(`${resourceHost}/api/auth/kakao`,params)
-      return await axios.get(`${resourceHost}/api/auth/kakao`)
+    async KAKAO_LOGIN ({commit}, {access_token}) {
+      return await axios.post(`${resourceHost}/api/auth/kakao/login`, {access_token})
         .then(({data}) => {
-          commit('KAKAO_LOGIN', {data}) //json 형태로 보내야됨 아니면 undefind 로 보내짐
-        })
+          commit('KAKAO_LOGIN',(data))
+      })
     }
   }
 })

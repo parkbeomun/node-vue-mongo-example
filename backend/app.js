@@ -1,3 +1,4 @@
+const createError = require('http-errors')
 const express = require('express');
 const mongoose = require('mongoose');
 const path = require('path')
@@ -6,6 +7,7 @@ const cookieParser = require('cookie-parser')
 const session = require('express-session')
 const history = require('connect-history-api-fallback');
 const passport = require('passport')
+const cors = require('cors')
 require('dotenv').config();
 
 const connect = require('./models');
@@ -23,7 +25,10 @@ const app = express();
 
 connect(); //DB  실행
 
-
+// app.use(cors({
+//     origin: "http://localhost:3000",
+//     credential: true
+// })) /* cors 에러 임시 조치 */
 
 app.set('view engine', 'pug');
 app.set('port', process.env.PORT || 3000);

@@ -85,6 +85,7 @@ exports.login = (req, res, next) => {
         } else {
             if(user.verify(password)) {
                 const p = new Promise((resolve, reject) => {
+                    console.log(user)
                     jwt.sign( //jwt.sign(payload, secretOrPrivateKey, [options, callback]).
                         {
                             _id: user._id,
@@ -98,15 +99,16 @@ exports.login = (req, res, next) => {
                             issuer: '',
                             subject: 'userinfo'
                         }, (err, token) => {
+                            console.log('console :',token)
                             if(err) reject(err)
-                            //console.log(user.name)
+                            console.log('test1')
                             resolve({
                                 token,
                                 name: username
                             })
                         })
                 })
-
+                console.log('return promise')
                 return p
 
             } else {
@@ -120,7 +122,7 @@ exports.login = (req, res, next) => {
     } //end check
 
     const respond = (data, name) => {
-        console.log(name)
+        console.log('response')
         res.json({
             message: 'logged in successfully',
             token: data.token,
