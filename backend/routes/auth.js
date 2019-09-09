@@ -17,14 +17,10 @@ router.get('/me',authController.me)
 
 
 /* social login */
-//console.log('get kakao')
-router.get('/kakao', passport.authenticate('kakao'))
-//console.log('callback kakao')
-router.get('/kakao/callback',passport.authenticate('kakao',{
-    filureRedirect:'/',
-}), (req,res) => {
-    res.redirect('/')
-})
+
+// api/auth/naver
+router.get('/naver', authController.naver)
+
 
 module.exports = router;
 

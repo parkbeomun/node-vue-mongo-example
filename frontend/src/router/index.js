@@ -11,6 +11,7 @@ import Todo from '@/components/todo/Todo'
 import JsonPlaceHolder from '@/components/JsonPlaceHolder'
 import Login from '@/components/auth/Login'
 import Logout from '@/components/auth/Logout'
+import LoginNaverCallback from '@/components/auth/LoginNaverCallback'
 import Register from '@/components/auth/Register'
 import Me from '@/components/Me'
 Vue.use(Router)
@@ -52,8 +53,11 @@ export default new Router({
       path: '/login',
       name: 'login',
       component: Login
-    },
-    ,{
+    },{
+      path: '/login/naver/callback',
+      name: 'LoginNaverCallback',
+      component: LoginNaverCallback
+    },{
       path: '/logout',
       name: 'logout',
       component: Logout

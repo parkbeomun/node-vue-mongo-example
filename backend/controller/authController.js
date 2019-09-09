@@ -158,3 +158,33 @@ exports.me = (req, res) => {
         info: req.decoded
     })
 }
+
+
+/*
+
+    GET /api/auth/naver
+    {
+
+    }
+
+ */
+var request = require('request')
+
+exports.naver = (req, res, next) => {
+    const client_id = process.env.NAVER_CLIENT_KEY
+    const client_secret = process.env.NAVER_CLIENT_SECRET
+    const state = "RAMDOM_STATE";
+    const redirectURI = encodeURI(`${process.env.NAVER_CALLBACK_URL}`);
+    // console.log(client_id)
+    let api_url = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${client_id}&redirect_uri=${redirectURI}&state=${state}`
+
+    console.log(api_url)
+    options = {
+        url: api_url,
+    }
+    request.get(options, (error, response, body) => {
+        res.render('')
+    })
+
+
+}
