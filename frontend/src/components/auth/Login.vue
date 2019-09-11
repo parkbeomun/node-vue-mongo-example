@@ -13,7 +13,7 @@
         <div class="form-group">
           <label class="form-label">password : </label>
           <input class="form-input" type="password" v-model="password" />
-        </div>
+        </div>render
         <br>
         <button type="submit" value="Login">로그인</button>
       </form>
@@ -29,7 +29,11 @@
         <button class='btn-social-login' style='background:#4267B2'><i class="xi-2x xi-facebook"></i></button>
 <!--        <button class='btn-social-login' style='background:#55ACEE'><i class="xi-2x xi-twitter"></i></button>-->
 <!--        <button class='btn-social-login' style='background:#24292E'><i class="xi-2x xi-github"></i></button>-->
-        <button class='btn-social-login' style='background:#1FC700' @click="onNaverLogin"><i class="xi-2x xi-naver"></i></button>
+<!--        <button class='btn-social-login' style='background:#1FC700' @click="onNaverLogin"><i class="xi-2x xi-naver"></i></button>-->
+        <div>
+          {{naverLoginUrl}}
+        </div>
+        <a :href="naverLoginUrl"><button class='btn-social-login' style='background:#1FC700'><i class="xi-2x xi-naver"></i></button></a>
         <button class='btn-social-login' style='background:#FFEB00' @click="onKakaoLogin"><i class="xi-2x xi-kakaotalk text-dark"></i></button>
       </div>
     </div>
@@ -41,9 +45,6 @@
   // import { mapActions, mapState } from 'vuex'
   /* login */
   export default {
-    mounted() {
-        Kakao.init('fccf32c070c010a9d5fb15cfc1ab9370')
-    },
     data () {
       return {
         valid: true,
@@ -55,9 +56,32 @@
           refrash_token: 'zzz',
           nikname: 'zzzz',
         }],
-        test: 'test'
+        test: 'test',
+        naverLoginUrl: 'https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=fjkwOaQsH3_sIfgQ1aZK&redirect_uri=http://127.0.0.1:3000&state=RAMDOM_STATE',
+        client_id: "fjkwOaQsH3_sIfgQ1aZK",
+        redirect_uri: "http://127.0.0.1:3000",
+        state: "RAMDOM_STATE",
       }
     },
+
+    mounted() {
+      Kakao.init('fccf32c070c010a9d5fb15cfc1ab9370')
+      //
+      // console.log(this.naverLoginUrl)
+      // console.log(this.client_id)
+      // console.log(this.redirect_uri)
+      // console.log(this.state)
+      //
+      //
+      // this.naverLoginUrl =+ "&client_id="+ String(this.client_id)
+      // this.naverLoginUrl =+ "&redirect_uri="+ String(this.redirect_uri)
+      // this.naverLoginUrl =+ "&state="+ String(this.state)
+
+      console.log(this.naverLoginUrl)
+
+
+    },
+
     methods: {
       // ...mapActions('login', ['login']),
       /*
@@ -89,10 +113,14 @@
       },
 
       onNaverLogin () {
-        socialLogin.naverLogin()
-          .then( result => {
 
-          })
+         socialLogin.naverLogin()
+           .then( result => {
+             console.log(result.data)
+             var w = window.open(result.data, '', 'width=400,height=400,resizeable,scrollbars');
+             // w.document = result.data;
+             // w.document.close(); // needed for chrome and safari
+           })
       },
 
       onKakaoLogin () {
