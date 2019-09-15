@@ -25,7 +25,8 @@ export default new Vuex.Store({
     accessToken: localStorage.getItem('access-token') || '',
     refresh_token: localStorage.getItem('refresh-token') || '',
     status: '',
-    username: ''
+    username: '',
+    token_type: ''
   },
   /*
     getter
@@ -58,8 +59,9 @@ export default new Vuex.Store({
       state.accessToken = data.token
       state.username = data.name
       //모든 HTTP 요청 헤더에 Authorization 을 추가한다. ( axios 기본 설정값 설정 참조 )
-      axios.defaults.headers.common['Authorization'] = `Bearer ${data.token}`
+      //axios.defaults.headers.common['Authorization'] = `Bearer ${data.token}`
       localStorage.setItem('access-token', data.token)
+      localStorage.setItem('token-type', 'Bearer')
     },
     LOGOUT (state) {
       state.accessToken = null
@@ -68,14 +70,39 @@ export default new Vuex.Store({
       localStorage.removeItem('access-token')
       localStorage.removeItem('refresh-token')
     },
-    KAKAO_LOGIN (state, {data}) {
-      //alert(data)
-      state.accessToken = data.token
+    // KAKAO_LOGIN (state, {data}) {
+    //   //alert(data)
+    //   state.accessToken = data.token
+    //   state.refresh_token = data.refresh_token
+    //   state.token_type = data.token_type
+    //   state.username = data.name
+    //
+    //   localStorage.setItem('access-token', data.token)
+    //   localStorage.setItem('refresh-token', state.refresh_token)
+    //   localStorage.setItem('token-type', 'Bearer')
+    // },
+    // NAVER_LOGIN (state, {data}) {
+    //
+    //   state.accessToken = data.access_token
+    //   state.refresh_token = data.refresh_token
+    //   state.token_type = data.token_type
+    //   state.username = data.name
+    //
+    //   localStorage.setItem('access-token', state.accessToken)
+    //   localStorage.setItem('refresh-token', state.refresh_token)
+    //   localStorage.setItem('token-type', state.token_type)
+    // },
+
+    SOCIAL_LOGIN (state, {data}) {
+      state.accessToken = data.access_token
+      state.refresh_token = data.refresh_token
+      state.token_type = data.token_type
       state.username = data.name
-      //모든 HTTP 요청 헤더에 Authorization 을 추가한다. ( axios 기본 설정값 설정 참조 )
-      axios.defaults.headers.common['Authorization'] = `Bearer ${data.token}`
-      localStorage.setItem('access-token', data.token)
-    },
+
+      localStorage.setItem('access-token', state.accessToken)
+      localStorage.setItem('refresh-token', state.refresh_token)
+      localStorage.setItem('token-type', state.token_type)
+    }
   },
 
   /*

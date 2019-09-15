@@ -5,6 +5,7 @@ import App from './App'
 import router from './router'
 import axios from 'axios'
 import store from './store'
+//import common from './assets/js/common'
 
 import 'expose-loader?$!expose-loader?jQuery!jquery'
 
@@ -13,9 +14,14 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 
 import BootstrapVue from 'bootstrap-vue'
 
+
+//common.setAxiosInterceptors(localStorage.getItem('token-type'), localStorage.getItem('access-token'))
 // Add a request interceptor
 axios.interceptors.request.use(function (config) {
-  config.headers.Authorization = localStorage.getItem('access-token') || ''
+  const tokenType =  localStorage.getItem('token-type') || ''
+  const accessToken =  localStorage.getItem('access-token') || ''
+
+  config.headers.Authorization = tokenType + " " + accessToken
   return config;
 }, function (error) {
   // Do something with request error

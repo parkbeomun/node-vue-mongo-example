@@ -30,12 +30,21 @@ connect(); //DB  실행
 //     credential: true
 // })) /* cors 에러 임시 조치 */
 
+
+/* **********************************
+**
+**  setting middleware
+**
+* **********************************/
+app.use(history()); //hash mode
 app.set('view engine', 'pug');
 app.set('port', process.env.PORT || 3000);
 app.use(bodyParser.json())
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static('public'));
+
+
 
 
 passportConfig(passport)

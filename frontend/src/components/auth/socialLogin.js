@@ -30,18 +30,4 @@ function kakaoLogin () {
 }
 
 
-/* Naver Login Server to Server */
-function naverLogin () {
-  return new Promise ( (reject ,resolve) => {
-    axios.get(`/api/auth/naver`)
-      .then( (result) => {
-        reject(result)
-      })
-      .catch( (err) => {
-        resolve(err)
-      })
-  })
-
-}
-
-export default {kakaoLogin, naverLogin}
+export default {kakaoLogin}

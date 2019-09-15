@@ -26,12 +26,11 @@
     <div class="login-footer">
       <div class="footer-sign-in">
         <button class='btn-social-login' style='background:#D93025'><i class="xi-2x xi-google"></i></button>
-        <button class='btn-social-login' style='background:#4267B2'><i class="xi-2x xi-facebook"></i></button>
+<!--        <button class='btn-social-login' style='background:#4267B2'><i class="xi-2x xi-facebook"></i></button>-->
 <!--        <button class='btn-social-login' style='background:#55ACEE'><i class="xi-2x xi-twitter"></i></button>-->
 <!--        <button class='btn-social-login' style='background:#24292E'><i class="xi-2x xi-github"></i></button>-->
 <!--        <button class='btn-social-login' style='background:#1FC700' @click="onNaverLogin"><i class="xi-2x xi-naver"></i></button>-->
         <div>
-          {{naverLoginUrl}}
         </div>
         <a :href="naverLoginUrl"><button class='btn-social-login' style='background:#1FC700'><i class="xi-2x xi-naver"></i></button></a>
         <button class='btn-social-login' style='background:#FFEB00' @click="onKakaoLogin"><i class="xi-2x xi-kakaotalk text-dark"></i></button>
@@ -57,7 +56,11 @@
           nikname: 'zzzz',
         }],
         test: 'test',
-        naverLoginUrl: 'https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=fjkwOaQsH3_sIfgQ1aZK&redirect_uri=http://127.0.0.1:3000&state=RAMDOM_STATE',
+        naverLoginUrl: 'https://nid.naver.com/oauth2.0/authorize?' +
+          'response_type=' +
+          'code&client_id=fjkwOaQsH3_sIfgQ1aZK' +
+          '&redirect_uri=http://127.0.0.1:3000/login/naver/callback' +
+          '&state=RAMDOM_STATE',
         client_id: "fjkwOaQsH3_sIfgQ1aZK",
         redirect_uri: "http://127.0.0.1:3000",
         state: "RAMDOM_STATE",
@@ -112,36 +115,28 @@
           .catch(({message}) => this.msg = "아이디 또는 비밀번호를 확인하세요")
       },
 
-      onNaverLogin () {
-
-         socialLogin.naverLogin()
-           .then( result => {
-             console.log(result.data)
-             var w = window.open(result.data, '', 'width=400,height=400,resizeable,scrollbars');
-             // w.document = result.data;
-             // w.document.close(); // needed for chrome and safari
-           })
-      },
 
       onKakaoLogin () {
 
         socialLogin.kakaoLogin()
           .then( result => {
-            //console.log('result : '+JSON.stringify(result.authObj))
-            //console.log('result2 : '+JSON.stringify(result.res))
+            console.log('result : '+JSON.stringify(result.authObj))
+            console.log('result2 : '+JSON.stringify(result.res))
 
             const access_token = result.authObj.access_token
-            const refrash_token = result.authObj.refrash_token
+            const refresh_token = result.authObj.refresh_token
+            const token_type = result.authObj.token_type
             const nikname = result.res.properties.nickname;
 
 
             var data = {
-              token : access_token,
-              refrash_token : refrash_token,
+              access_token,
+              refresh_token,
+              token_type,
               name : nikname
             }
 
-            this.$store.commit('KAKAO_LOGIN', {data})
+            this.$store.commit('SOCIAL_LOGIN', {data})
             this.$router.push({path:'/'})
 
 

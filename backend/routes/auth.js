@@ -20,6 +20,8 @@ router.get('/me',authController.me)
 
 // api/auth/naver
 router.get('/naver', authController.naver)
+router.get('/naver/callback', authController.naver_callback)
+router.post('/naver/me', authController.naver_me)
 
 
 module.exports = router;

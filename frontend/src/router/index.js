@@ -24,6 +24,7 @@ const requireAuth = () => (from, to, next) => {
 
 //mode: 'history' 를 설정하면 URL 의 # 이 없어진다.
 export default new Router({
+  mode: 'history',
   routes: [
     {
       path: '/',
