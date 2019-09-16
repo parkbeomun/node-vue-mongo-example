@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema
 
 const User = new Schema({
-    //To-do title
+
     email: {
         type: String,
         required: true
@@ -30,6 +30,10 @@ const User = new Schema({
     admin: {
         type: Boolean,
         default: false
+    },
+    access_token: {
+        type: String,
+        require: true
     }
 
 });
@@ -61,6 +65,35 @@ User.methods.assignAdmin = function() {
 //vertify the password of the User document
 User.methods.verify = function(password) {
     return this.password === password
+}
+
+
+/* ******************************************************************
+** 소셜 로그인 관련
+ * ******************************************************************/
+
+//find one user by using username
+User.statics.findOneByEmailAndProvider = function(email, provider) {
+    return this.findOne({
+        email,
+        provider
+    }).exec()
+}
+
+//create new User document
+User.statics.social_create = function(email, password, name, nick, snsId, provider, access_token ) {
+    const user = new this({
+        email,
+        password,
+        name,
+        nick,
+        snsId,
+        provider,
+        access_token
+    })
+
+    //return the Promise
+    return user.save()
 }
 
 module.exports = mongoose.model('users', User);

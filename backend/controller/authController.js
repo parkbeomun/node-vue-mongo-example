@@ -260,6 +260,7 @@ exports.naver_me = (req, res, next) => {
 
     getNaverMe(req.body)
         .then((data) => {
+            console.log(data)
             res.json(200,data)
         })
         .catch((err) => {
@@ -269,6 +270,91 @@ exports.naver_me = (req, res, next) => {
         })
 
 }
+
+/*
+
+    POST /api/auth/naver/register
+    {
+        access_token,
+        token_type
+    }
+
+ */
+
+exports.naver_register = (req, res, next) => {
+    //email, password, name, nick, snsId, provider, admin
+    //email, password, name, nick, snsId, provider
+    const { id, name, nickname, email, access_token } = req.body
+    const nick = nickname
+    const snsId = email
+    const provider = 'naver'
+
+    const create = function (user) {
+        if( user ) {
+            return Promise.resolve(false)
+        }else{
+            return User.social_create(id, '', name, nick, snsId, provider, access_token)
+        }
+    }
+
+    const respond = (data, name) => {
+        console.log('response')
+        res.json({
+            message: 'resiger in successfully',
+        })
+    }
+
+    const onError = (error) => {
+        res.status(403).json({
+            message: error.message
+        })
+    }
+
+    //check username duplication
+    User.findOneByEmailAndProvider(id, provider)
+        .then(create)
+        .then(respond)
+        .catch(onError)
+
+}
+
+exports.kakao_register = (req, res, next) => {
+    //email, password, name, nick, snsId, provider, admin
+    //email, password, name, nick, snsId, provider
+    const { id, name, nickname, email, access_token } = req.body
+    const nick = nickname
+    const snsId = email
+    const provider = 'kakao'
+
+    const create = function (user) {
+        if( user ) {
+            return Promise.resolve(false)
+        }else{
+            return User.social_create(id, '', name, nick, snsId, provider, access_token)
+        }
+    }
+
+    const respond = (data, name) => {
+        console.log('response')
+        res.json({
+            message: 'resiger in successfully',
+        })
+    }
+
+    const onError = (error) => {
+        res.status(403).json({
+            message: error.message
+        })
+    }
+
+    //check username duplication
+    User.findOneByEmailAndProvider(id, provider)
+        .then(create)
+        .then(respond)
+        .catch(onError)
+
+}
+
 
 var getNaverMe = function (data) {
 

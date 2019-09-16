@@ -42,21 +42,32 @@
                   refresh_token,
                   token_type
                 }).then( (response) => {
-
                   var me = response.data.response
+
+                  var id = me['id']
                   var name = me['name']
+                  var nickname = me['nickname']
+                  var email = me['email']
 
-                  var data = {
-                    access_token,
-                    refresh_token,
-                    token_type,
-                    name
-                  }
 
-                  this.$store.commit('SOCIAL_LOGIN', {data})
-                  this.$router.push({path:'/'})
+                  this.$http.post(`${this.baseURI}/naver/register`, {
+                    id,
+                    name,
+                    nickname,
+                    email,
+                    access_token
+                  }).then( (response) => {
+                    var data = {
+                      access_token,
+                      refresh_token,
+                      token_type,
+                      name
+                    }
+
+                    this.$store.commit('SOCIAL_LOGIN', {data})
+                    this.$router.push({path:'/'})
+                  })
                 })
-
               })
             }
           }

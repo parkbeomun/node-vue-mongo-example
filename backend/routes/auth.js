@@ -18,10 +18,16 @@ router.get('/me',authController.me)
 
 /* social login */
 
-// api/auth/naver
+// naver
 router.get('/naver', authController.naver)
 router.get('/naver/callback', authController.naver_callback)
 router.post('/naver/me', authController.naver_me)
+
+router.post('/naver/register', authController.naver_register)
+router.post('/kakao/register', authController.kakao_register)
+
+
+
 
 
 module.exports = router;

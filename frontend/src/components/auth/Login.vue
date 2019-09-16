@@ -46,6 +46,7 @@
   export default {
     data () {
       return {
+        baseURI : "/api/auth",
         valid: true,
         email: '',
         password: '',
@@ -126,20 +127,30 @@
             const access_token = result.authObj.access_token
             const refresh_token = result.authObj.refresh_token
             const token_type = result.authObj.token_type
-            const nikname = result.res.properties.nickname;
+            const id = result.res.id;
+            const name = result.res.properties.nickname;
+            const nickname = result.res.properties.nickname;
+            const email = ''
 
+            console.log('id:'+id)
 
-            var data = {
-              access_token,
-              refresh_token,
-              token_type,
-              name : nikname
-            }
+            this.$http.post(`${this.baseURI}/kakao/register`, {
+              id,
+              name,
+              nickname,
+              email,
+              access_token
+            }).then( (response) => {
+              var data = {
+                access_token,
+                refresh_token,
+                token_type,
+                name : nickname
+              }
 
-            this.$store.commit('SOCIAL_LOGIN', {data})
-            this.$router.push({path:'/'})
-
-
+              this.$store.commit('SOCIAL_LOGIN', {data})
+              this.$router.push({path:'/'})
+            })
           })
 
       },
